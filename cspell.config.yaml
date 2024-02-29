@@ -19,6 +19,7 @@ words:
   - SOVERSION
   - STREQUAL
   - superbuild
+  - tictactoe
   - tiqtaq
   - tiqtaqcore
 ignoreWords: []
