@@ -1,0 +1,25 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - AUTOMOC
+  - AUTOUIC
+  - BINDIR
+  - CMAKEDIR
+  - CPACK
+  - DBUILD
+  - DCMAKE
+  - INCLUDEDIR
+  - INLINES
+  - LIBDIR
+  - NAMELINK
+  - rowasjo
+  - RPATH
+  - SOVERSION
+  - STREQUAL
+  - superbuild
+  - tiqtaq
+  - tiqtaqcore
+ignoreWords: []
+import: []
