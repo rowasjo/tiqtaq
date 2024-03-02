@@ -1,9 +1,13 @@
 
-add_library(row_tiqtaqcore
+qt_add_library(row_tiqtaqcore
   src/computer.cpp
   src/game.cpp
+  src/gameviewcontroller.cpp
   include/row/tiqtaq/computer.hpp
-  include/row/tiqtaq/game.hpp)
+  include/row/tiqtaq/game.hpp
+  include/row/tiqtaq/gameviewcontroller.hpp)
+
+target_link_libraries(row_tiqtaqcore PUBLIC Qt6::Widgets)
 
 target_include_directories(row_tiqtaqcore PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -14,7 +18,8 @@ set_target_properties(
   row_tiqtaqcore PROPERTIES
   SOVERSION ${PROJECT_VERSION_MAJOR}
   VERSION ${PROJECT_VERSION}
-  EXPORT_NAME tiqtaq)
+  EXPORT_NAME tiqtaq
+  AUTOMOC ON)
 
 add_library(row_tiqtaqcore::tiqtaq ALIAS row_tiqtaqcore)
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <row/row_tiqtaqcore_export.h>
 #include <array>
 #include <cstdint>
 
@@ -19,7 +20,7 @@ struct Position {
 
 using Board = std::array<std::array<Cell, dimension>, dimension>;
 
-class Game {
+class ROW_TIQTAQCORE_EXPORT Game {
  public:
   Game();
 

@@ -7,7 +7,7 @@ namespace row::tiqtaq {
 namespace {
 
 using Line = std::array<Position, dimension>;
-using BoardLines = std::array<Line, 8>;  // all lines for the game
+using BoardLines = std::array<Line, 8>;  // All lines for the game
 
 constexpr BoardLines board_lines = {
     Line{Position{0, 0}, Position{0, 1}, Position{0, 2}},  // Row 1
