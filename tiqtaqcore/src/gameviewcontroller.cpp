@@ -40,26 +40,32 @@ QString statusMessageFromGameState(GameState state, bool isXNext) {
 }  // namespace
 
 GameViewController::GameViewController(QWidget* parent) : QWidget(parent) {
-  QGridLayout* gridLayout = new QGridLayout;
-  _status_label = new QLabel("Your turn");
+  QFont font{};
+  font.setPointSize(16);
+  this->setFont(font);
+
+  QVBoxLayout* main_layout = new QVBoxLayout(this);
+
+  _status_label = new QLabel("Your turn", this);
+  main_layout->addWidget(_status_label);
+
+  QGridLayout* grid_layout = new QGridLayout(this);
   for (int row = 0; row < board_dimension; ++row) {
     for (int col = 0; col < board_dimension; ++col) {
-      _buttons[row][col] = new QPushButton;
+      _buttons[row][col] = new QPushButton(this);
       QPushButton* const button = _buttons[row][col];
       button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
       button->setText(button_empty_text);
       button->setProperty(button_type_property, button_type_board_cell);
       button->setProperty(row_property, row);
       button->setProperty(col_property, col);
-      gridLayout->addWidget(button, row, col);
+      grid_layout->addWidget(button, row, col);
       connect(button, &QPushButton::clicked, this, &GameViewController::buttonClicked);
     }
   }
+  main_layout->addLayout(grid_layout);
 
-  QVBoxLayout* mainLayout = new QVBoxLayout;
-  mainLayout->addWidget(_status_label);
-  mainLayout->addLayout(gridLayout);
-  setLayout(mainLayout);
+  setLayout(main_layout);
   setWindowTitle(tr("Tic Tac Toe"));
   updateBoard();
 }
@@ -71,11 +77,13 @@ void GameViewController::buttonClicked() {
     return;
   }
 
-  int row = clicked_button->property(row_property).toInt();
-  int col = clicked_button->property(col_property).toInt();
-  Position pos{static_cast<uint8_t>(row), static_cast<uint8_t>(col)};
+  auto row = clicked_button->property(row_property).toUInt();
+  auto col = clicked_button->property(col_property).toUInt();
+  if (row >= board_dimension || col >= board_dimension) {
+    throw std::out_of_range("Button position is outside the board.");
+  }
 
-  if (!_game.makeMove(pos)) {
+  if (!_game.makeMove({static_cast<uint8_t>(row), static_cast<uint8_t>(col)})) {
     return;
   }
 
@@ -84,6 +92,7 @@ void GameViewController::buttonClicked() {
     _game.makeMove(weakComputerMove(_game));
     updateBoard();
   }
+
   _status_label->setText(statusMessageFromGameState(_game.state(), _game.xIsNext()));
   if (_game.state() != GameState::Playing) {
     disableButtons();
