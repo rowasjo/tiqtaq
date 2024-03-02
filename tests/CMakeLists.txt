@@ -4,6 +4,7 @@ add_executable(row_tiqtaq_tests
 
 target_link_libraries(row_tiqtaq_tests PRIVATE
   row_tiqtaqcore
-  Catch2::Catch2WithMain)
+  doctest)
 
-catch_discover_tests(row_tiqtaq_tests)
+include(doctest)
+doctest_discover_tests(row_tiqtaq_tests)

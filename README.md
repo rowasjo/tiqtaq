@@ -11,9 +11,7 @@ Launch Tic-Tac-Toe application:
 
 ## Build Guide
 
-This project requires Catch2 for building and running tests. To disable building of tests, pass the CMake arg '-DBUILD_TESTING:BOOL=FALSE'.
-
-Catch2 may be preinstalled, installed using a package manager, or built from source using the provided dependency SuperBuild. See [deps-superbuild](deps-superbuild/README.md) for details.
+To disable building of tests, pass the CMake arg '-DBUILD_TESTING:BOOL=FALSE'.
 
 ## Ubuntu LTS 22.04
 

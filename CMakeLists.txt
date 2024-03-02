@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
+
 include(CMakePrintHelpers)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
@@ -12,9 +13,6 @@ message(STATUS "Configuring project ${CMAKE_PROJECT_NAME} ...")
 enable_testing()
 
 include(GNUInstallDirs)
-
-set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-set(CMAKE_VISIBILITY_INLINES_HIDDEN TRUE)
 
 option(BUILD_SHARED_LIBS "" OFF)
 
@@ -30,8 +28,16 @@ add_subdirectory(tiqtaq)
 include(CTest)
 if(BUILD_TESTING)
   message(STATUS "Configuring ${CMAKE_PROJECT_NAME} tests ...")
-  find_package(Catch2 REQUIRED)
-  include(Catch)
+
+  include(FetchContent)
+  FetchContent_Declare(doctest
+    GIT_REPOSITORY https://github.com/doctest/doctest.git
+    GIT_TAG v2.4.11)
+
+  FetchContent_MakeAvailable(doctest)
+
+  list(APPEND CMAKE_MODULE_PATH ${doctest_SOURCE_DIR}/scripts/cmake)
+
   add_subdirectory(tests)
 endif()
 

@@ -19,7 +19,9 @@ set_target_properties(
   SOVERSION ${PROJECT_VERSION_MAJOR}
   VERSION ${PROJECT_VERSION}
   EXPORT_NAME tiqtaq
-  AUTOMOC ON)
+  AUTOMOC ON
+  CXX_VISIBILITY_PRESET hidden
+  VISIBILITY_INLINES_HIDDEN TRUE)
 
 add_library(row_tiqtaqcore::tiqtaq ALIAS row_tiqtaqcore)
 

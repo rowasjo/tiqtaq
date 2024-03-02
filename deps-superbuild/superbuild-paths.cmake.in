@@ -1,2 +1,0 @@
-
-set(Catch2_ROOT @Catch2_INSTALL_DIR@ CACHE PATH "")
