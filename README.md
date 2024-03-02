@@ -4,7 +4,10 @@ Simple Tic-Tac-Toe application using Qt Widgets
 
 ## Usage Guide
 
-...
+Launch Tic-Tac-Toe application:
+```
+<build-dir>/tiqtaq/row_tiqtaq
+```
 
 ## Build Guide
 
@@ -14,8 +17,12 @@ Catch2 may be preinstalled, installed using a package manager, or built from sou
 
 ## Ubuntu LTS 22.04
 
+Install QT 6 (6.2):
+```
+sudo apt-get install qt6-base-dev
+```
+
+You may also need to install some other packages for find_package with component Widgets to work:
 ```
 sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev
-sudo apt-get install libxkbcommon-dev
-sudo apt-get install qt6-base-dev
 ```

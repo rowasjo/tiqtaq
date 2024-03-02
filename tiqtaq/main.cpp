@@ -1,4 +1,8 @@
 #include <QtWidgets>
+#include <row/tiqtaq/computer.hpp>
+#include <row/tiqtaq/game.hpp>
+
+namespace row::tiqtaq {
 
 class TicTacToe : public QWidget {
   Q_OBJECT
@@ -12,13 +16,11 @@ class TicTacToe : public QWidget {
  private:
   QPushButton* buttons[3][3];
   QLabel* statusLabel;
+  Game game;
 
-  void computerMove();
-  void checkWinCondition();
-  bool checkRowColDiag(int rowStart, int colStart, int rowStep, int colStep);
+  void updateBoard();
   void updateStatus();
   void disableButtons();
-  bool isBoardFull();
 };
 
 TicTacToe::TicTacToe(QWidget* parent) : QWidget(parent) {
@@ -39,96 +41,69 @@ TicTacToe::TicTacToe(QWidget* parent) : QWidget(parent) {
   mainLayout->addLayout(gridLayout);
   setLayout(mainLayout);
   setWindowTitle(tr("Tic Tac Toe"));
+  updateBoard();
 }
 
 void TicTacToe::buttonClicked() {
   QPushButton* clickedButton = qobject_cast<QPushButton*>(sender());
-  if (clickedButton && clickedButton->text().isEmpty()) {
-    clickedButton->setText("X");  // Player's move
-    if (!isBoardFull()) {
-      checkWinCondition();  // Check if player wins
-      if (statusLabel->text() == "Your turn") {
-        computerMove();       // Computer's move if the game is not over
-        checkWinCondition();  // Check if computer wins
-      }
-    }
-  }
-}
-
-void TicTacToe::computerMove() {
   for (int row = 0; row < 3; ++row) {
     for (int col = 0; col < 3; ++col) {
-      if (buttons[row][col]->text().isEmpty()) {
-        buttons[row][col]->setText("O");
+      if (buttons[row][col] == clickedButton) {
+        Position pos{static_cast<uint8_t>(row), static_cast<uint8_t>(col)};
+        if (game.makeMove(pos)) {
+          updateBoard();
+          GameState state = game.state();
+          if (state == GameState::Playing) {
+            game.makeMove(computerMove(game));
+            updateBoard();
+            state = game.state();
+          }
+          updateStatus();
+          if (state != GameState::Playing) {
+            disableButtons();
+          }
+        }
         return;
       }
     }
   }
 }
 
-void TicTacToe::checkWinCondition() {
-  bool hasWinner = false;
-  QString winner;
-
-  // Check rows and columns
-  for (int i = 0; i < 3; ++i) {
-    if (checkRowColDiag(i, 0, 0, 1)) {  // Check row
-      hasWinner = true;
-      winner = buttons[i][0]->text();  // Winner based on the row check
-      break;
-    }
-    if (checkRowColDiag(0, i, 1, 0)) {  // Check column
-      hasWinner = true;
-      winner = buttons[0][i]->text();  // Winner based on the column check
-      break;
-    }
-  }
-
-  // Check primary diagonal
-  if (!hasWinner && checkRowColDiag(0, 0, 1, 1)) {
-    hasWinner = true;
-    winner = buttons[0][0]->text();  // Winner based on the primary diagonal
-  }
-
-  // Check secondary diagonal
-  if (!hasWinner && checkRowColDiag(0, 2, 1, -1)) {
-    hasWinner = true;
-    winner = buttons[0][2]->text();  // Winner based on the secondary diagonal
-  }
-
-  if (hasWinner) {
-    if (winner == "X") {
-      statusLabel->setText("You win!");
-    } else {
-      statusLabel->setText("You lose!");
-    }
-    disableButtons();
-    return;
-  }
-
-  if (isBoardFull()) {
-    statusLabel->setText("Draw!");
-    disableButtons();
-  }
-}
-
-bool TicTacToe::checkRowColDiag(int rowStart, int colStart, int rowStep, int colStep) {
-  QString first = buttons[rowStart][colStart]->text();
-  if (first.isEmpty())
-    return false;
-
-  for (int i = 1; i < 3; ++i) {
-    if (buttons[rowStart + i * rowStep][colStart + i * colStep]->text() != first) {
-      return false;
+void TicTacToe::updateBoard() {
+  Board board = game.board();
+  for (int row = 0; row < dimension; ++row) {
+    for (int col = 0; col < dimension; ++col) {
+      QString text;
+      switch (board[row][col]) {
+        case Cell::X:
+          text = "X";
+          break;
+        case Cell::O:
+          text = "O";
+          break;
+        case Cell::Empty:
+          text = "";
+          break;
+      }
+      buttons[row][col]->setText(text);
     }
   }
-
-  return true;
 }
 
 void TicTacToe::updateStatus() {
-  if (statusLabel->text().endsWith("turn")) {
-    statusLabel->setText("Your turn");
+  switch (game.state()) {
+    case GameState::Playing:
+      statusLabel->setText(game.xIsNext() ? "Your turn" : "Computer's turn");
+      break;
+    case GameState::X_Wins:
+      statusLabel->setText("You win!");
+      break;
+    case GameState::O_Wins:
+      statusLabel->setText("You lose!");
+      break;
+    case GameState::Draw:
+      statusLabel->setText("Draw!");
+      break;
   }
 }
 
@@ -140,23 +115,14 @@ void TicTacToe::disableButtons() {
   }
 }
 
-bool TicTacToe::isBoardFull() {
-  for (int row = 0; row < 3; ++row) {
-    for (int col = 0; col < 3; ++col) {
-      if (buttons[row][col]->text().isEmpty()) {
-        return false;
-      }
-    }
-  }
-  return true;
-}
+}  // namespace row::tiqtaq
 
 #include "main.moc"
 
 int main(int argc, char* argv[]) {
   QApplication app(argc, argv);
 
-  TicTacToe tictactoe;
+  row::tiqtaq::TicTacToe tictactoe;
   tictactoe.show();
 
   return app.exec();

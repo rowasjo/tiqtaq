@@ -13,6 +13,7 @@ words:
   - INCLUDEDIR
   - INLINES
   - LIBDIR
+  - Makefiles
   - NAMELINK
   - rowasjo
   - RPATH

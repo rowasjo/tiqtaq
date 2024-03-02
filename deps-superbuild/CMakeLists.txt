@@ -25,7 +25,7 @@ ExternalProject_Add(Catch2
   PREFIX Catch2-prefix
   INSTALL_DIR Catch2-prefix/install_dir
   GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG v3.5.0
+  GIT_TAG v3.5.2
   CMAKE_ARGS
     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
     -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>

@@ -1,7 +1,9 @@
 
 add_library(row_tiqtaqcore
-  src/dummy.cpp
-  include/row/tiqtaq/dummy.hpp)
+  src/computer.cpp
+  src/game.cpp
+  include/row/tiqtaq/computer.hpp
+  include/row/tiqtaq/game.hpp)
 
 target_include_directories(row_tiqtaqcore PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

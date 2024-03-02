@@ -3,15 +3,15 @@ include(CMakePrintHelpers)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS FALSE)
-
-include(GNUInstallDirs)
 
 project(ROW_TiqTaq VERSION 1.0.0 LANGUAGES CXX)
 message(STATUS "Configuring project ${CMAKE_PROJECT_NAME} ...")
 enable_testing()
+
+include(GNUInstallDirs)
 
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN TRUE)
