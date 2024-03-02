@@ -5,23 +5,34 @@
 
 namespace row::tiqtaq {
 
+using BoardButtons = std::array<std::array<QPushButton*, board_dimension>, board_dimension>;
+
+/// GameViewController serves as the view-controller for the tic-tac-toe game,
+/// integrating the game logic with a graphical interface for interaction.
 class ROW_TIQTAQCORE_EXPORT GameViewController : public QWidget {
   Q_OBJECT
 
  public:
+  /// Initializes the game interface, setting up the board, connecting signals,
+  /// and preparing the game for play.
+  /// @param parent The parent widget, defaulting to nullptr if not specified.
   GameViewController(QWidget* parent = nullptr);
 
  private slots:
+  /// Responds to tic-tac-toe board button clicks, processes the player's move,
+  /// and subsequently triggers a computer move. Updates the game and UI state.
   void buttonClicked();
 
  private:
-  QPushButton* buttons[3][3];
-  QLabel* statusLabel;
-  Game game;
-
+  /// Refreshes the board's UI to match the current game state.
   void updateBoard();
-  void updateStatus();
+
+  /// Disables all board buttons, used after the game concludes.
   void disableButtons();
+
+  BoardButtons _buttons;  ///< Represents the tic-tac-toe board cells.
+  QLabel* _status_label;  ///< Displays current _game status and instructions.
+  Game _game;             ///< Manages the tic-tac-toe game logic.
 };
 
 }  // namespace row::tiqtaq

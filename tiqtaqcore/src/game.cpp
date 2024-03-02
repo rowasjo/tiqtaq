@@ -1,12 +1,13 @@
 #include <row/tiqtaq/game.hpp>
 #include <algorithm>
 #include <ranges>
+#include <stdexcept>
 
 namespace row::tiqtaq {
 
 namespace {
 
-using Line = std::array<Position, dimension>;
+using Line = std::array<Position, board_dimension>;
 using BoardLines = std::array<Line, 8>;  // All lines for the game
 
 constexpr BoardLines board_lines = {
@@ -20,14 +21,14 @@ constexpr BoardLines board_lines = {
     Line{Position{2, 0}, Position{1, 1}, Position{0, 2}}   // Diagonal 2
 };
 
-constexpr std::array<Cell, dimension> lineValues(Line line, Board board) {
-  std::array<Cell, dimension> values;
+constexpr std::array<Cell, board_dimension> lineValues(Line line, Board board) {
+  std::array<Cell, board_dimension> values;
   std::ranges::transform(line, values.begin(), [board](Position pos) { return board[pos.row][pos.col]; });
   return values;
 }
 
 constexpr bool isLineWin(const Line& line,
-    const std::array<std::array<Cell, dimension>, dimension>& board,
+    const std::array<std::array<Cell, board_dimension>, board_dimension>& board,
     Cell player) {
   auto values = lineValues(line, board);
   return std::ranges::all_of(values, [player](Cell cell) { return cell == player; });
@@ -57,7 +58,7 @@ constexpr GameState checkGameState(Board board) {
 Game::Game() : _board{}, _game_state{GameState::Playing}, _x_is_next{true} {}
 
 bool Game::makeMove(Position pos) {
-  if (pos.row >= dimension || pos.col >= dimension) {
+  if (pos.row >= board_dimension || pos.col >= board_dimension) {
     throw std::out_of_range("Position is outside the board.");
   }
 
@@ -73,12 +74,12 @@ bool Game::makeMove(Position pos) {
   return true;
 }
 
-GameState Game::state() const {
-  return _game_state;
-}
-
 bool Game::xIsNext() const {
   return _x_is_next;
+}
+
+GameState Game::state() const {
+  return _game_state;
 }
 
 Board Game::board() const {

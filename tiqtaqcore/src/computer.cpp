@@ -3,7 +3,7 @@
 
 namespace row::tiqtaq {
 
-Position computerMove(const Game& game) {
+Position weakComputerMove(const Game& game) {
   // Simple strategy: first available spot
   const Board board = game.board();
   for (uint8_t row = 0; row < 3; ++row) {

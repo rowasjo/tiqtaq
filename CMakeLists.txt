@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS FALSE)
 
-project(ROW_TiqTaq VERSION 1.0.0 LANGUAGES CXX)
+project(ROW_TiqTaq VERSION 0.1.0 LANGUAGES CXX)
 message(STATUS "Configuring project ${CMAKE_PROJECT_NAME} ...")
 enable_testing()
 
@@ -23,8 +23,6 @@ if(NOT APPLE)
 endif()
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets Core)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
 
 add_subdirectory(tiqtaqcore)
 add_subdirectory(tiqtaq)

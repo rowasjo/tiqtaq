@@ -6,7 +6,7 @@
 
 namespace row::tiqtaq {
 
-constexpr int dimension = 3;
+constexpr int board_dimension = 3;
 
 enum class Cell : uint8_t { Empty, X, O };
 enum class GameState { Playing, X_Wins, O_Wins, Draw };
@@ -18,15 +18,25 @@ struct Position {
   constexpr inline bool operator==(Position b) const { return row == b.row && col == b.col; }
 };
 
-using Board = std::array<std::array<Cell, dimension>, dimension>;
+using Board = std::array<std::array<Cell, board_dimension>, board_dimension>;
 
+/// Manages the state and logic of a Tic-Tac-Toe game.
 class ROW_TIQTAQCORE_EXPORT Game {
  public:
   Game();
 
+  /// Attempts to make a move on the board for the current player.
+  /// The player (X or O) is determined by the current state of the game, as indicated by xIsNext().
+  /// @param pos The desired position for the move.
+  /// @return True if the move was successfully made, false if the position was already occupied.
+  /// @throws std::out_of_range If the position is outside the board dimensions.
   bool makeMove(Position pos);
-  GameState state() const;
+
+  /// Determines whose turn it is to play next.
+  /// @return True if it's player X's turn, false for player O's turn.
   bool xIsNext() const;
+
+  GameState state() const;
   Board board() const;
 
  private:
