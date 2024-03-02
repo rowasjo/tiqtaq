@@ -10,9 +10,11 @@ words:
   - CPACK
   - DBUILD
   - DCMAKE
+  - Gameplay
   - INCLUDEDIR
   - INLINES
   - LIBDIR
+  - libgl
   - Makefiles
   - NAMELINK
   - rowasjo
