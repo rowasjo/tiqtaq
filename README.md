@@ -50,10 +50,18 @@ Launch Tic-Tac-Toe application:
 <build-dir>/tiqtaq/row_tiqtaq
 ```
 
-The GUI can be expected to work using Ubuntu LTS 22.04 via WSL 2.
+### Gameplay Overview
 
-## Gameplay
+- **Starting Player**: The human player starts as 'X', and the computer plays as 'O'.
+- **Restarting the Game**: Restart the application to begin a new game.
 
-- The player always starts
-- Restart application to restart the game
-- Computer makes only weak moves (first available cell)
+### Computer Opponent
+
+- **Default Mode**: By default, the computer employs the minimax algorithm for its moves, ensuring it plays optimally. 
+  Winning against the computer in this mode is not possible.
+- **Easy Mode**: Set environment variable `TIQTAQ_EASY_MODE=true` to make the computer beatable, where it will choose the first available cell. 
+
+### Compatibility
+
+This application has been tested on Ubuntu LTS 22.04 via Windows Subsystem for Linux (WSL) 2. 
+It's a minimalistic Qt Widgets app that may also work in other similar environments.

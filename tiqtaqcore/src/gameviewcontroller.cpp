@@ -40,7 +40,8 @@ QString statusMessageFromGameState(GameState state, bool isXNext) {
 
 }  // namespace
 
-GameViewController::GameViewController(QWidget* parent) : QWidget(parent) {
+GameViewController::GameViewController(ComputerMoveFunction computer_move, QWidget* parent)
+    : QWidget(parent), _computer_move(std::move(computer_move)) {
   QFont font{};
   font.setPointSize(16);
   this->setFont(font);
@@ -90,7 +91,7 @@ void GameViewController::buttonClicked() {
 
   updateBoard();
   if (_game.state() == GameState::Playing) {
-    Position computer_move = strongComputerMove(_game.board());
+    Position computer_move = _computer_move(_game.board());
     if (!_game.makeMove(computer_move)) {
       throw std::logic_error{"Computer returned already occupied move"};
     }

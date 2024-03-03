@@ -11,6 +11,9 @@ words:
   - DBUILD
   - DCMAKE
   - Gameplay
+  - gametypes
+  - gameutils
+  - gameviewcontroller
   - INCLUDEDIR
   - INLINES
   - LIBDIR
