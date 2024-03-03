@@ -40,8 +40,8 @@ QString statusMessageFromGameState(GameState state, bool isXNext) {
 
 }  // namespace
 
-GameViewController::GameViewController(ComputerMoveFunction computer_move, QWidget* parent)
-    : QWidget(parent), _computer_move(std::move(computer_move)) {
+GameViewController::GameViewController(const ComputerMoveFunction& computer_move, QWidget* parent)
+    : QWidget(parent), _computer_move(computer_move) {
   QFont font{};
   font.setPointSize(16);
   this->setFont(font);
@@ -52,19 +52,18 @@ GameViewController::GameViewController(ComputerMoveFunction computer_move, QWidg
   main_layout->addWidget(_status_label);
 
   QGridLayout* grid_layout = new QGridLayout(this);
-  for (int row = 0; row < board_dimension; ++row) {
-    for (int col = 0; col < board_dimension; ++col) {
-      _buttons[row][col] = new QPushButton(this);
-      QPushButton* const button = _buttons[row][col];
-      button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-      button->setText(button_empty_text);
-      button->setProperty(button_type_property, button_type_board_cell);
-      button->setProperty(row_property, row);
-      button->setProperty(col_property, col);
-      grid_layout->addWidget(button, row, col);
-      connect(button, &QPushButton::clicked, this, &GameViewController::buttonClicked);
-    }
+  for (const auto [row, col] : all_positions) {
+    _buttons[row][col] = new QPushButton(this);
+    QPushButton* const button = _buttons[row][col];
+    button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    button->setText(button_empty_text);
+    button->setProperty(button_type_property, button_type_board_cell);
+    button->setProperty(row_property, row);
+    button->setProperty(col_property, col);
+    grid_layout->addWidget(button, row, col);
+    connect(button, &QPushButton::clicked, this, &GameViewController::buttonClicked);
   }
+
   main_layout->addLayout(grid_layout);
 
   setLayout(main_layout);
@@ -79,8 +78,8 @@ void GameViewController::buttonClicked() {
     return;
   }
 
-  auto row = clicked_button->property(row_property).toUInt();
-  auto col = clicked_button->property(col_property).toUInt();
+  const auto row = clicked_button->property(row_property).toUInt();
+  const auto col = clicked_button->property(col_property).toUInt();
   if (row >= board_dimension || col >= board_dimension) {
     throw std::out_of_range("Button position is outside the board.");
   }
@@ -91,7 +90,7 @@ void GameViewController::buttonClicked() {
 
   updateBoard();
   if (_game.state() == GameState::Playing) {
-    Position computer_move = _computer_move(_game.board());
+    const Position computer_move = _computer_move(_game.board());
     if (!_game.makeMove(computer_move)) {
       throw std::logic_error{"Computer returned already occupied move"};
     }
@@ -106,11 +105,9 @@ void GameViewController::buttonClicked() {
 }
 
 void GameViewController::updateBoard() {
-  Board board = _game.board();
-  for (int row = 0; row < board_dimension; ++row) {
-    for (int col = 0; col < board_dimension; ++col) {
-      _buttons[row][col]->setText(textFromCell(board[row][col]));
-    }
+  const Board board = _game.board();
+  for (const auto pos : all_positions) {
+    _buttons[pos.row][pos.col]->setText(textFromCell(cellAt(board, pos)));
   }
 }
 

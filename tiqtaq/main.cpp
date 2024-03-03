@@ -8,11 +8,11 @@ int main(int argc, char* argv[]) {
   QApplication app(argc, argv);
 
   const char* easy_mode_env = std::getenv("TIQTAQ_EASY_MODE");
-  bool easy_mode = easy_mode_env && std::string(easy_mode_env) == "true";
+  const bool easy_mode = easy_mode_env && std::string(easy_mode_env) == "true";
 
   ComputerMoveFunction computer_move = easy_mode ? weakComputerMove : strongComputerMove;
 
-  GameViewController tictactoe(std::move(computer_move));
+  GameViewController tictactoe(computer_move);
   tictactoe.show();
 
   return app.exec();

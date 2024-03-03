@@ -2,7 +2,6 @@
 
 #include <row/row_tiqtaqcore_export.h>
 #include <row/tiqtaq/gametypes.hpp>
-#include <vector>
 
 namespace row::tiqtaq {
 
@@ -29,7 +28,6 @@ class ROW_TIQTAQCORE_EXPORT Game {
   Board _board;
   bool _x_is_next;
   GameState _game_state;
-  std::vector<Position> _moves;
 };
 
 }  // namespace row::tiqtaq

@@ -27,8 +27,10 @@ constexpr std::optional<int> terminalScore(GameState state, int depth) {
   }
 }
 
-constexpr std::pair<int, std::optional<Position>> minimax(Board board, int depth, bool is_maximizing) {
-  std::optional<int> terminal_score = terminalScore(checkGameState(board), depth);
+constexpr std::pair<int, std::optional<Position>> minimax(const Board board,
+    const int depth,
+    const bool is_maximizing) {
+  const std::optional<int> terminal_score = terminalScore(checkGameState(board), depth);
   if (terminal_score) {
     return {*terminal_score, std::nullopt};
   }
@@ -36,14 +38,14 @@ constexpr std::pair<int, std::optional<Position>> minimax(Board board, int depth
   int best_score = is_maximizing ? std::numeric_limits<int>::min() : std::numeric_limits<int>::max();
   std::optional<Position> best_move = std::nullopt;
 
-  for (auto move : all_positions) {
-    if (board[move.row][move.col] != Cell::Empty) {
+  for (const auto move : all_positions) {
+    if (cellAt(board, move) != Cell::Empty) {
       continue;
     }
 
     Board new_board = board;
-    new_board[move.row][move.col] = is_maximizing ? Cell::X : Cell::O;
-    auto [score, _] = minimax(new_board, depth + 1, !is_maximizing);
+    cellAt(new_board, move) = is_maximizing ? Cell::X : Cell::O;
+    const auto [score, _] = minimax(new_board, depth + 1, !is_maximizing);
     if ((is_maximizing && score > best_score) || (!is_maximizing && score < best_score)) {
       best_score = score;
       best_move = move;
@@ -56,9 +58,9 @@ constexpr std::pair<int, std::optional<Position>> minimax(Board board, int depth
 }  // namespace
 
 Position strongComputerMove(Board board) {
-  int depth = boardDepth(board);
-  bool is_maximizing = (depth % 2) == 0;
-  std::optional move = minimax(board, boardDepth(board), is_maximizing).second;
+  const int depth = boardDepth(board);
+  const bool is_maximizing = (depth % 2) == 0;
+  const std::optional move = minimax(board, boardDepth(board), is_maximizing).second;
   if (!move) {
     throw std::logic_error{"Illegal call to make computer move on a board that has ended"};
   }
@@ -70,8 +72,8 @@ Position weakComputerMove(Board board) {
     throw std::logic_error{"Illegal call to make computer move on a board that has ended"};
   }
 
-  for (auto pos : all_positions) {
-    if (board[pos.row][pos.col] == Cell::Empty) {
+  for (const auto pos : all_positions) {
+    if (cellAt(board, pos) == Cell::Empty) {
       return pos;
     }
   }

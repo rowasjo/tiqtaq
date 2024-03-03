@@ -33,5 +33,14 @@ constexpr std::array<Position, 9> all_positions = {
 using BoardColumn = std::array<Cell, board_dimension>;
 
 using Board = std::array<BoardColumn, board_dimension>;
+static_assert(sizeof(Board) == 9);
+
+constexpr Cell& cellAt(Board& board, Position pos) {
+  return board[pos.row][pos.col];
+}
+
+constexpr const Cell& cellAt(const Board& board, Position pos) {
+  return board[pos.row][pos.col];
+}
 
 }  // namespace row::tiqtaq

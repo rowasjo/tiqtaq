@@ -20,13 +20,11 @@ constexpr BoardLines board_lines = {
 
 constexpr std::array<Cell, board_dimension> lineValues(Line line, Board board) {
   std::array<Cell, board_dimension> values;
-  std::ranges::transform(line, values.begin(), [board](Position pos) { return board[pos.row][pos.col]; });
+  std::ranges::transform(line, values.begin(), [board](Position pos) { return cellAt(board, pos); });
   return values;
 }
 
-constexpr bool isLineWin(const Line& line,
-    const std::array<std::array<Cell, board_dimension>, board_dimension>& board,
-    Cell player) {
+constexpr bool isLineWin(Line line, Board board, Cell player) {
   auto values = lineValues(line, board);
   return std::ranges::all_of(values, [player](Cell cell) { return cell == player; });
 }
@@ -46,7 +44,8 @@ constexpr GameState checkGameState(Board board) {
 
   // Declaring draw when all cells are filled. For larger boards a counter could keep track of
   // number of cells filled. It is also possible to declare draw earlier when no player can win.
-  bool isFull = std::ranges::all_of(board | std::views::join, [](const Cell& cell) { return cell != Cell::Empty; });
+  const bool isFull =
+      std::ranges::all_of(board | std::views::join, [](const Cell& cell) { return cell != Cell::Empty; });
   return isFull ? GameState::Draw : GameState::Playing;
 }
 

@@ -31,8 +31,7 @@ TEST_CASE("Making moves") {
   SUBCASE("Making a valid move changes the board") {
     Position pos{0, 0};
     CHECK(game.makeMove(pos));
-    auto board = game.board();
-    CHECK(board[pos.row][pos.col] != Cell::Empty);
+    CHECK(cellAt(game.board(), pos) != Cell::Empty);
   }
 
   SUBCASE("Alternating turns") {

@@ -11,13 +11,11 @@ bool Game::makeMove(Position pos) {
     throw std::out_of_range("Position is outside the board.");
   }
 
-  if (_board[pos.row][pos.col] != Cell::Empty || _game_state != GameState::Playing) {
+  if (cellAt(_board, pos) != Cell::Empty || _game_state != GameState::Playing) {
     return false;
   }
 
-  _moves.push_back(pos);
-
-  _board[pos.row][pos.col] = _x_is_next ? Cell::X : Cell::O;
+  cellAt(_board, pos) = _x_is_next ? Cell::X : Cell::O;
   _x_is_next = !_x_is_next;  // Toggle player
 
   _game_state = checkGameState(_board);
