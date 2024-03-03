@@ -1,24 +1,10 @@
 #pragma once
 
 #include <row/row_tiqtaqcore_export.h>
-#include <array>
-#include <cstdint>
+#include <row/tiqtaq/gametypes.hpp>
+#include <vector>
 
 namespace row::tiqtaq {
-
-constexpr int board_dimension = 3;
-
-enum class Cell : uint8_t { Empty, X, O };
-enum class GameState { Playing, X_Wins, O_Wins, Draw };
-
-struct Position {
-  uint8_t row;
-  uint8_t col;
-
-  constexpr inline bool operator==(Position b) const { return row == b.row && col == b.col; }
-};
-
-using Board = std::array<std::array<Cell, board_dimension>, board_dimension>;
 
 /// Manages the state and logic of a Tic-Tac-Toe game.
 class ROW_TIQTAQCORE_EXPORT Game {
@@ -43,6 +29,7 @@ class ROW_TIQTAQCORE_EXPORT Game {
   Board _board;
   bool _x_is_next;
   GameState _game_state;
+  std::vector<Position> _moves;
 };
 
 }  // namespace row::tiqtaq

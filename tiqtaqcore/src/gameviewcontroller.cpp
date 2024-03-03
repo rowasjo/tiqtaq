@@ -1,4 +1,5 @@
 #include <row/tiqtaq/gameviewcontroller.hpp>
+#include <stdexcept>
 
 namespace row::tiqtaq {
 
@@ -89,7 +90,11 @@ void GameViewController::buttonClicked() {
 
   updateBoard();
   if (_game.state() == GameState::Playing) {
-    _game.makeMove(weakComputerMove(_game));
+    Position computer_move = strongComputerMove(_game.board());
+    if (!_game.makeMove(computer_move)) {
+      throw std::logic_error{"Computer returned already occupied move"};
+    }
+
     updateBoard();
   }
 

@@ -2,9 +2,11 @@
 qt_add_library(row_tiqtaqcore
   src/computer.cpp
   src/game.cpp
+  src/gameutils.hpp
   src/gameviewcontroller.cpp
   include/row/tiqtaq/computer.hpp
   include/row/tiqtaq/game.hpp
+  include/row/tiqtaq/gametypes.hpp
   include/row/tiqtaq/gameviewcontroller.hpp)
 
 target_link_libraries(row_tiqtaqcore PUBLIC Qt6::Widgets)

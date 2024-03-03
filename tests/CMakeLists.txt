@@ -1,6 +1,7 @@
 
 add_executable(row_tiqtaq_tests
-  test.cpp)
+  gametests.cpp
+  computertests.cpp)
 
 target_link_libraries(row_tiqtaq_tests PRIVATE
   row_tiqtaqcore
