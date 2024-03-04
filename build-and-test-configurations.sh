@@ -20,7 +20,7 @@ run_pipeline() {
   local build_type=$1
 
   # Create a build directory relative to the current working directory
-  local build_dir="builds/tiqtaq-${build_type}"
+  local build_dir="builds/build-tiqtaq-${build_type}"
   mkdir -p "${build_dir}"
   pushd "${build_dir}"
 
