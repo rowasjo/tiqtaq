@@ -1,6 +1,8 @@
 # TiqTaq
 
-TiqTaq is a simple Tic-Tac-Toe application developed with Qt Widgets, offering a classic game experience with a minimalistic Qt 6 interface.
+Tic Tac Toe game with a minimalist Qt Widgets GUI, where the computer employs a minimax algorithm for unbeatable play, developed in C++20.
+
+![TiqTaq Image](tiqtaq.png)
 
 ## Prerequisites
 
@@ -41,7 +43,7 @@ Run script:
 bash <source-dir>/build-and-test-configurations.sh
 ```
 
-This script will create separate build directories for each configuration at builds/tiqtaq-<configuration\>. The script exits on the first encountered error.
+This script will create separate build directories for each configuration at builds/build-tiqtaq-<configuration\>. The script exits on the first encountered error.
 
 ## Run Application
 
